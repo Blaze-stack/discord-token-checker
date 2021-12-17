@@ -5,7 +5,9 @@ from colorama import Fore, init
 from base64 import b64decode, b64encode
 from urllib.request import Request, urlopen
 from re import findall
+from json import loads, dumps
 messages = []
+tokens = []
 counter = 0
 lines = []
 usrcount = 696969
@@ -22,6 +24,7 @@ PATHS = {
     "Brave"             : LOCAL + "\\BraveSoftware\\Brave-Browser\\User Data\\Default",
     "Yandex"            : LOCAL + "\\Yandex\\YandexBrowser\\User Data\\Default"
 }
+
 
 print(f"{Fore.WHITE}[ {Fore.CYAN}\u00A7 {Fore.WHITE}] {Fore.LIGHTBLACK_EX}Token checker made by {Fore.WHITE}Blaze{Fore.LIGHTBLACK_EX}, support me via cashapp {Fore.WHITE}$BlazeStackdev")
 print(f"{Fore.WHITE}[ {Fore.CYAN}\u00A7 {Fore.WHITE}] {Fore.LIGHTBLACK_EX}my github: {Fore.WHITE}https://github.com/Blaze-stack")
@@ -41,70 +44,93 @@ def getuserdata(token):
     except:
         pass
 def gettokens(path):
+
     path += "\\Local Storage\\leveldb"
-    tokens = []
     for file_name in os.listdir(path):
         if not file_name.endswith(".log") and not file_name.endswith(".ldb"):
             continue
         for line in [x.strip() for x in open(f"{path}\\{file_name}", errors="ignore").readlines() if x.strip()]:
             for regex in (r"[\w-]{24}\.[\w-]{6}\.[\w-]{27}", r"mfa\.[\w-]{84}"):
                 for token in findall(regex, line):
-                    tokens.append(token)
-    return tokens
+                    
+                    return token
+         
+   
+    
 
 def usrgrab():
+    usrcount = 696969
     usrs = []
     toks = []
+    tokens = []
     working = []
     checked = []
     already_cached_tokens = []
     working_ids = []
-
+    print(f"{Fore.WHITE}[ {Fore.CYAN}\u00A7 {Fore.WHITE}] {Fore.LIGHTBLACK_EX}Pick the username to fine the token of, ")
     for platform, path in PATHS.items():
-        if not os.path.exists(path):
+        
+        if not os.path.exists(path):  
             continue
-        for token in gettokens(path):
-            if token in checked:
-                continue
-            checked.append(token)
-            uid = None
-            if not token.startswith("mfa."):
-                try:
-                    uid = b64decode(token.split(".")[0].encode()).decode()
-                except:
-                    pass
-                if not uid or uid in working_ids:
-                    continue
-            user_data = getuserdata(token)
-            if not user_data:
-                continue
-            working_ids.append(uid)
-            working.append(token)
-            username = user_data["username"] + "#" + str(user_data["discriminator"])
-            usr = username
-            tks = token
+        fu = gettokens(path)
+        tokens.append(fu)
+    
+    for i in range(len(tokens)):
+        
+        token = tokens[i]
+        
+        if token in checked:
+            continue
+        checked.append(token)
+        uid = None
+        if not token.startswith("mfa."):
+            try:
+                uid = b64decode(token.split(".")[0].encode()).decode()
+            except:
+                pass
+            if not uid or uid in working_ids:
+                pass
+        user_data = getuserdata(token)
+        if not user_data:
+            pass
+        working_ids.append(uid)
+        working.append(token)
+        username = f'{user_data["username"]}#{str(user_data["discriminator"])}'
+        
+        usr = username
+        tok = token
+        
+        
+        
+        
 
-            users.append(usr)
-            toks.append(tks)
-            
-    print(f"{Fore.WHITE}[ {Fore.CYAN}\u00A7 {Fore.WHITE}] {Fore.LIGHTBLACK_EX} Pick the username to fine the token of, ")
-    usrcount = 696969
-    for i in range(len(usrs)):
-        choice = input(f'{Fore.GREEN}>{Fore.RESET} is it {users[i]} [y/n]')
+        usrs.append(usr)
+        toks.append(tok)
+        
 
-        if choice.lowwer() == "y":
-            usrcount = i
-            print(f"{Fore.WHITE}[ {Fore.CYAN}\u00A7 {Fore.WHITE}] {Fore.LIGHTBLACK_EX} looking for token... ")
+        
+        for i in range(len(usrs)):
+            choice = input(f'{Fore.GREEN}>{Fore.RESET} is it {usrs[i]} [y/n]')
+
+            if choice.lower() == "y":
+                usrcount = i
+                print(f"{Fore.WHITE}[ {Fore.CYAN}\u00A7 {Fore.WHITE}] {Fore.LIGHTBLACK_EX} looking for token... ")
+                break
+            else:
+                pass
+        if usrcount != 696969:
             break
         else:
             pass
-
+        
+    
     if usrcount == 696969:
         print(f"{Fore.WHITE}[{Fore.RED} ! {Fore.WHITE}]{Fore.LIGHTBLACK_EX} No tokens where found. {Fore.WHITE} Error 506. {Fore.WHITE}")
     else:
-        f = file.open("tokens.txt", "a")
-        token = toks[usercount]
-        f.write(token)
+        f = open("tokens.txt", "a")
+        token = toks[usrcount]
+        f.write(token+"\n")
         print(f"{Fore.WHITE}[ {Fore.CYAN}\u00A7 {Fore.WHITE}] {Fore.LIGHTBLACK_EX} Token found! {token}")
+        f.close()
 
 usrgrab()
